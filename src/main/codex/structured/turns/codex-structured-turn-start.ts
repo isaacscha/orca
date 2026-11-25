@@ -123,11 +123,14 @@ export async function startCodexTurn(
     host.appliedTurnInputOptions = knownInput
     discardSettingsAttempt = host.appliedSettings?.attempt(requested)
     enqueued = true
+    // turn/start can steer into a running turn: an echo in one of these joined it.
     host.dispatchEchoes.expect(
       input.clientMessageId,
       host.threadId,
       'start',
-      turnInputFor(host, body)
+      turnInputFor(host, body),
+      undefined,
+      [...(host.activeTurnIds ?? [])]
     )
     const previousMode = host.permissions?.appliedMode
     if (host.permissions && mode) {

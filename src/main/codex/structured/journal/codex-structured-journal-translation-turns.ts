@@ -57,6 +57,22 @@ export function codexTurnLifecycleIdentity(
   }
 }
 
+/** The settled send a provider echo names, with how it was taken: a turn start Codex steered into
+ *  a turn already running joined that turn (`sentVia` reads the echo's turn). */
+export function codexEchoedSend(
+  sessionId: string,
+  clientMessageId: string,
+  providerIdentity: AgentJournalItemIdentity,
+  sentVia: (clientMessageId: string, echoTurnId?: string) => AgentJournalTurnJoin | null
+) {
+  const turnId = providerIdentity.provider === 'codex' ? providerIdentity.turnId : undefined
+  return {
+    sessionId,
+    clientMessageId,
+    ...codexAcceptedSend(sessionId, providerIdentity, sentVia(clientMessageId, turnId))
+  }
+}
+
 /** A send written into a running turn joined the turn its echo names, which another send opened. */
 export function codexAcceptedSend(
   sessionId: string,

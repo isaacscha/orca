@@ -8,6 +8,9 @@ export type CodexExpectedDispatchReceipt = {
   via: AgentJournalTurnJoin
   turnId?: string
   key: string | null
+  /** A turn start's turns already running when it was written: Codex may steer it into one, and
+   *  an echo in one of them joined that turn, which another send opened. */
+  runningTurnIds?: readonly string[]
 }
 
 function compareKey(content: unknown): string | null {
@@ -49,18 +52,33 @@ export function createCodexDispatchReceiptCorrelation(
   const seenReceipts = new Map<string, string | null>()
   const turnKey = (threadId: string, turnId: string) => JSON.stringify([threadId, turnId])
   return {
-    sentVia: (id: string): AgentJournalTurnJoin | null =>
-      armed.get(id)?.turn?.via ?? armed.get(id)?.expected?.via ?? null,
+    sentVia: (id: string, echoTurnId?: string): AgentJournalTurnJoin | null => {
+      const entry = armed.get(id)
+      const via = entry?.turn?.via ?? entry?.expected?.via ?? null
+      // Echoed into a turn that was already running when the start was written: it joined it.
+      return via === 'start' &&
+        echoTurnId !== undefined &&
+        entry?.expected?.runningTurnIds?.includes(echoTurnId)
+        ? 'steer'
+        : via
+    },
     expect: (
       id: string,
       threadId: string,
       via: AgentJournalTurnJoin,
       input: readonly Record<string, unknown>[],
-      turnId?: string
+      turnId?: string,
+      runningTurnIds?: readonly string[]
     ) => {
       const entry = armed.get(id)
       if (entry) {
-        entry.expected = { threadId, via, key: compareKey(input), ...(turnId ? { turnId } : {}) }
+        entry.expected = {
+          threadId,
+          via,
+          key: compareKey(input),
+          ...(turnId ? { turnId } : {}),
+          ...(runningTurnIds?.length ? { runningTurnIds } : {})
+        }
       }
     },
     receipt: (

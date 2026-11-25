@@ -41,7 +41,10 @@ export function createCodexSessionJournalTranslator(input: {
         clearPromptTurn: (threadId, turnId) => prompts.clearTurn(threadId, turnId),
         onUserMessageEcho: (clientMessageId, providerIdentity) => {
           // Read before settling: settling forgets how the send was written.
-          const via = dispatchEchoes.sentVia(clientMessageId)
+          const via = dispatchEchoes.sentVia(
+            clientMessageId,
+            providerIdentity.provider === 'codex' ? providerIdentity.turnId : undefined
+          )
           // Duplicate exact echoes retry receipt persistence while the send remains unsettled.
           dispatchEchoes.settle(clientMessageId)
           deps.onDispatchSettledLate?.({
