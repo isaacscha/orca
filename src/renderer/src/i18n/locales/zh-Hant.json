@@ -20486,7 +20486,9 @@
         "deleted": "此自動化已刪除",
         "loadFailed": "無法讀取此自動化",
         "openFullPage": "開啟頁面",
-        "onAgent": "由 {{name}} 執行"
+        "onAgent": "由 {{name}} 執行",
+        "open": "開啟",
+        "savedWhen": "已儲存：{{when}}"
       },
       "usageLimitActions": {
         "handOff": "交接給代理程式"

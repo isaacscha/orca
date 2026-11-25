@@ -21492,7 +21492,9 @@
         "deleted": "Эта автоматизация удалена",
         "loadFailed": "Не удалось прочитать эту автоматизацию",
         "openFullPage": "Открыть страницу",
-        "onAgent": "на {{name}}"
+        "onAgent": "на {{name}}",
+        "open": "Открыть",
+        "savedWhen": "Сохранено: {{when}}"
       },
       "usageLimitActions": {
         "handOff": "Передать агенту"

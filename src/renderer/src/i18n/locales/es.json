@@ -20484,7 +20484,9 @@
         "deleted": "Esta automatización se eliminó",
         "loadFailed": "No se pudo leer esta automatización",
         "openFullPage": "Abrir página",
-        "onAgent": "con {{name}}"
+        "onAgent": "con {{name}}",
+        "open": "Abrir",
+        "savedWhen": "Guardada: {{when}}"
       },
       "mcp": {
         "status": {

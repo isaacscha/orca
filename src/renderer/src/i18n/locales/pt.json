@@ -22378,7 +22378,9 @@
         "deleted": "Esta automação foi excluída",
         "loadFailed": "Não foi possível ler esta automação",
         "openFullPage": "Abrir página",
-        "onAgent": "em {{name}}"
+        "onAgent": "em {{name}}",
+        "open": "Abrir",
+        "savedWhen": "Salva: {{when}}"
       },
       "mcp": {
         "status": {
